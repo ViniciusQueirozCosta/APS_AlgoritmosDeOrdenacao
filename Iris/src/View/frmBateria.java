@@ -17,6 +17,7 @@ public class frmBateria extends javax.swing.JDialog
 {
     private Thread t;
     private static volatile boolean flag = true;
+    private static volatile boolean rodando = false;
     
 
     /**
@@ -26,6 +27,7 @@ public class frmBateria extends javax.swing.JDialog
     {
         super(parent, modal);
         initComponents();
+        frmBateria.flag = true;
         
         Controller.Controle controle = new Controller.Controle();
         if(controle.LerArquivoExterno().isEmpty())
@@ -162,79 +164,72 @@ public class frmBateria extends javax.swing.JDialog
     private void btnExecutarActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnExecutarActionPerformed
     {//GEN-HEADEREND:event_btnExecutarActionPerformed
         
-        if(t == null)
+        if(frmBateria.rodando == false)
         {
+            frmBateria.rodando = true;
             t = new Thread(() ->
             {
-                while(frmBateria.flag)
+                Controller.Controle controle = new Controller.Controle();
+
+                double tempo;
+                double tempoTotal = 0;
+                List<Integer> listaNumeros, listaNumerosDesordenado;
+                tempo = 0;
+
+                listaNumerosDesordenado = controle.LerArquivoExterno();
+
+                for(int i = 0; i < 100 && frmBateria.flag == true; i++)
                 {
-                    Controller.Controle controle = new Controller.Controle();
-
-                    double tempo;
-                    double tempoTotal = 0;
-                    List<Integer> listaNumeros, listaNumerosDesordenado;
-                    tempo = 0;
-
-                    listaNumerosDesordenado = controle.LerArquivoExterno();
-
-                    for(int i = 0; i < 100; i++)
-                    {
-                        if(frmBateria.flag == false)
-                            break;
-                        listaNumeros = new ArrayList(listaNumerosDesordenado);
-                        tempo = controle.countingSort(listaNumeros);
-                        txaTextBox.append("CountingSort:: Tempo: "+ tempo + " ms; Tamanho: "+listaNumeros.size()+" \n");
-                        listaNumeros.clear();
-                        tempoTotal += tempo;
-                    }
-
-                    lblMediaCountingSort.setText(String.valueOf(tempoTotal/100));
-                    tempoTotal = 0;
-
-                    for(int i = 0; i < 100; i++)
-                    {
-                        if(frmBateria.flag == false)
-                            break;
-                        listaNumeros = new ArrayList(listaNumerosDesordenado);
-                        tempo = controle.quickSort(listaNumeros);
-                        txaTextBox.append("QuickSort:: Tempo: "+ tempo + " ms; Tamanho: "+listaNumeros.size()+" \n");
-                        listaNumeros.clear();
-                        tempoTotal += tempo;
-                    }
-
-                    lblMediaQuickSort.setText(String.valueOf(tempoTotal/100));
-                    tempoTotal = 0;
-
-                    for(int i = 0; i < 100; i++)
-                    {
-                        if(frmBateria.flag == false)
-                            break;
-                        listaNumeros = new ArrayList(listaNumerosDesordenado);
-                        tempo = controle.insertionSort(listaNumeros);
-                        txaTextBox.append("InsertionSort:: Tempo: "+ tempo + " ms; Tamanho: "+listaNumeros.size()+" \n");
-                        listaNumeros.clear();
-                        tempoTotal += tempo;
-                    }
-
-                    lblMediaInsertionSort.setText(String.valueOf(tempoTotal/100));
-                    tempoTotal = 0;
-
-                    for(int i = 0; i < 100; i++)
-                    {
-                        if(frmBateria.flag == false)
-                            break;
-                        listaNumeros = new ArrayList(listaNumerosDesordenado);
-                        tempo = controle.bubbleSort(listaNumeros);
-                        txaTextBox.append("BubbleSort:: Tempo: "+ tempo + " ms; Tamanho: "+listaNumeros.size()+" \n");
-                        listaNumeros.clear();
-                        tempoTotal += tempo;
-                    }
-
-                    lblMediaBubbleSort.setText(String.valueOf(tempoTotal/100));
-                    tempoTotal = 0;
+                    listaNumeros = new ArrayList(listaNumerosDesordenado);
+                    tempo = controle.countingSort(listaNumeros);
+                    txaTextBox.append("CountingSort:: Tempo: "+ tempo + " ms; Tamanho: "+listaNumeros.size()+" \n");
+                    listaNumeros.clear();
+                    tempoTotal += tempo;
+                    lblMediaCountingSort.setText(String.valueOf(tempoTotal/(i+1)));
                 }
+
+                tempoTotal = 0;
+
+                for(int i = 0; i < 100 && frmBateria.flag == true; i++)
+                {
+                    listaNumeros = new ArrayList(listaNumerosDesordenado);
+                    tempo = controle.quickSort(listaNumeros);
+                    txaTextBox.append("QuickSort:: Tempo: "+ tempo + " ms; Tamanho: "+listaNumeros.size()+" \n");
+                    listaNumeros.clear();
+                    tempoTotal += tempo;
+                    lblMediaQuickSort.setText(String.valueOf(tempoTotal/(i+1)));
+                }
+
+                tempoTotal = 0;
+
+                for(int i = 0; i < 100 && frmBateria.flag == true; i++)
+                {
+                    listaNumeros = new ArrayList(listaNumerosDesordenado);
+                    tempo = controle.insertionSort(listaNumeros);
+                    txaTextBox.append("InsertionSort:: Tempo: "+ tempo + " ms; Tamanho: "+listaNumeros.size()+" \n");
+                    listaNumeros.clear();
+                    tempoTotal += tempo;
+                    lblMediaInsertionSort.setText(String.valueOf(tempoTotal/(i+1)));
+                }
+
+                tempoTotal = 0;
+
+                for(int i = 0; i < 100 && frmBateria.flag == true; i++)
+                {
+                    listaNumeros = new ArrayList(listaNumerosDesordenado);
+                    tempo = controle.bubbleSort(listaNumeros);
+                    txaTextBox.append("BubbleSort:: Tempo: "+ tempo + " ms; Tamanho: "+listaNumeros.size()+" \n");
+                    listaNumeros.clear();
+                    tempoTotal += tempo;
+                    lblMediaBubbleSort.setText(String.valueOf(tempoTotal/(i+1)));
+                }
+
+                tempoTotal = 0;
+                frmBateria.rodando = false;
+
             });
             t.start();
+            
         }
     }//GEN-LAST:event_btnExecutarActionPerformed
 

@@ -217,7 +217,20 @@ public class frmPrincipal extends javax.swing.JDialog {
             listaNumeros = controle.CriarListaRandomica();
 
         else
+        {
             listaNumeros = controle.LerArquivoExterno();
+            if(listaNumeros.isEmpty())
+            {
+                if(controle.CriarEExportarArquivo())
+                {
+                    JOptionPane.showMessageDialog(null, "Arquivo criado com sucesso!");
+                    listaNumeros = controle.LerArquivoExterno();
+                }
+
+                else
+                    JOptionPane.showMessageDialog(null, "Erro na Criação de arquivo!");
+            }
+        }
         
         tempo = 0;
 
@@ -243,6 +256,11 @@ public class frmPrincipal extends javax.swing.JDialog {
 
     private void btnBateriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBateriaActionPerformed
 
+        Controller.Controle controle = new Controller.Controle();
+        List<Integer> listaNumeros = controle.LerArquivoExterno();
+        if(listaNumeros.isEmpty());
+            
+            
         frmBateria frmB = new frmBateria(null, true);
         frmB.setVisible(true);
         
