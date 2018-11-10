@@ -52,10 +52,10 @@ public class Controle extends Utils<Object> {
     
     public boolean isOrdenado(List<Integer> listaNumeros)
     {
-        int atual=0;
+        int atual=Integer.MIN_VALUE;
         for(int i = 0; i < listaNumeros.size(); i++)
         {
-            if(atual <= listaNumeros.get(i))
+            if(atual < listaNumeros.get(i))
                 atual = listaNumeros.get(i);
             else
                 return false;

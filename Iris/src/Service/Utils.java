@@ -11,10 +11,16 @@ import java.util.Random;
 import java.util.List;
 
 public class Utils<T> {
-    //Se nescessário, altere valores aqui
-    private final String nome="listaNumeros.txt";
-    private final int quantidade=100000;
-    private final int valorMaximo=32000;
+    private final String nome;
+    private final int quantidade;
+    private final int valorMaximo;
+
+    public Utils()
+    {
+        this.nome = "listaNumeros.txt";
+        this.quantidade=100000;
+        this.valorMaximo=32000;
+    }
     
     public boolean ExportarArquivo(List<Integer> listaInteiros, String arquivo) {
         try {
